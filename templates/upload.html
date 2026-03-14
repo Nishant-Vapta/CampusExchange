@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Upload Product</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<nav>
+<h2>Campus Exchange 🎓</h2>
+
+<div>
+<a href="/">Home</a>
+<a href="/upload">Upload</a>
+<a href="/chat">Chat</a>
+
+<a href="/manage">
+<button style="margin-top:15px;">Manage My Products</button>
+</a>
+
+</div>
+</nav>
+
+
+<div class="form-container">
+
+<form method="POST" enctype="multipart/form-data">
+
+<input name="title" placeholder="Title" required>
+
+<input name="category" placeholder="Category" required>
+
+<input name="price" placeholder="Price" required>
+
+<textarea name="description" placeholder="Description"></textarea>
+
+<input type="file" name="images" multiple required>
+
+<button type="submit">Upload</button>
+
+</form>
+
+</div>
+
+</body>
+</html>

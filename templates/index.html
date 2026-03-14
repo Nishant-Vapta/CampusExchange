@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Campus Exchange</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<style>
+
+.product-img{
+width:100%;
+height:220px;
+object-fit:cover;
+border-radius:8px;
+cursor:pointer;
+}
+
+/* IMAGE VIEWER */
+
+.modal{
+display:none;
+position:fixed;
+z-index:1000;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.9);
+}
+
+.modal-content{
+display:block;
+margin:auto;
+max-width:80%;
+max-height:80%;
+margin-top:60px;
+}
+
+.close{
+position:absolute;
+top:20px;
+right:40px;
+font-size:40px;
+color:white;
+cursor:pointer;
+}
+
+.prev, .next{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+font-size:40px;
+color:white;
+cursor:pointer;
+padding:10px;
+}
+
+.prev{
+left:40px;
+}
+
+.next{
+right:40px;
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+
+</style>
+
+</head>
+
+<body>
+
+<nav>
+<div class="brand">
+<h1>Furniture Swap & Share</h1>
+<p class="tagline">Senior's Treasure, Junior's Find</p>
+</div>
+
+
+<div>
+<a href="/">Home</a>
+<a href="/upload">Upload</a>
+<a href="/chat">Chat</a>
+</div>
+</nav>
+
+
+<div class="slider">
+
+<div class="slides">
+
+
+<img src="{{ url_for('static', filename='banner/k.png') }}">
+<img src="{{ url_for('static', filename='banner/l.png') }}">
+<img src="{{ url_for('static', filename='banner/m.png') }}">
+<img src="{{ url_for('static', filename='banner/n.png') }}">
+<img src="{{ url_for('static', filename='banner/o.png') }}">
+<img src="{{ url_for('static', filename='banner/P.png') }}">
+
+<img src="{{ url_for('static', filename='banner/sofa.jpg') }}">
+
+
+</div>
+
+</div>
+
+
+
+
+<div class="search-bar">
+<input type="text" id="search" placeholder="Search products..." onkeyup="searchProducts()">
+</div>
+
+
+<div class="grid" id="productGrid">
+
+{% for item in items %}
+
+{% set imgs = item[5].split(",") %}
+
+<div class="card">
+
+<img src="{{ url_for('static', filename='uploads/' + imgs[0].strip()) }}"
+     class="product-img"
+     onclick="openViewer('{{ item[5] }}')">
+
+
+<h3>{{ item[1] }}</h3>
+<p>{{ item[4] }}</p>
+<h4>₹ {{ item[3] }}</h4>
+
+{% if item[6] == 'sold' %}
+<p style="color:red;font-weight:bold;">SOLD</p>
+{% endif %}
+
+
+
+</div>
+
+{% endfor %}
+
+</div>
+
+
+<!-- IMAGE VIEWER -->
+
+<div id="imageViewer" class="modal">
+
+<span class="close" onclick="closeViewer()">×</span>
+
+<span class="prev" onclick="changeImage(-1)">❮</span>
+
+<img class="modal-content" id="viewerImg">
+
+<span class="next" onclick="changeImage(1)">❯</span>
+
+</div>
+
+
+
+<script>
+
+let images=[]
+let index=0
+
+function openViewer(imgString){
+
+images = imgString.split(",")
+
+for(let i=0;i<images.length;i++){
+images[i] = images[i].trim()
+}
+
+index = 0
+
+document.getElementById("imageViewer").style.display="block"
+
+document.getElementById("viewerImg").src="/static/uploads/"+images[index].trim()
+
+
+}
+
+function closeViewer(){
+
+document.getElementById("imageViewer").style.display="none"
+
+}
+
+function changeImage(direction){
+
+index=index+direction
+
+if(index<0){
+index=images.length-1
+}
+
+if(index>=images.length){
+index=0
+}
+
+document.getElementById("viewerImg").src="/static/uploads/"+images[index].trim()
+
+
+}
+
+
+
+function searchProducts(){
+
+let input=document.getElementById("search").value.toLowerCase()
+
+let cards=document.getElementsByClassName("card")
+
+for(let i=0;i<cards.length;i++){
+
+let title=cards[i].getElementsByTagName("h3")[0].innerText.toLowerCase()
+
+if(title.includes(input)){
+cards[i].style.display="block"
+}
+else{
+cards[i].style.display="none"
+}
+
+}
+
+}
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Global Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+</head>
+<body>
+
+<nav>
+    <h2>Campus Exchange 🎓</h2>
+    <div>
+        <a href="/">Home</a>
+        <a href="/upload">Upload</a>
+        <a href="/chat">Chat</a>
+    </div>
+</nav>
+
+<div class="chat-container">
+    <div id="messages"></div>
+
+    <div class="chat-input">
+        <input id="messageInput" placeholder="Type message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+var socket = io();
+
+socket.on("message", function(msg) {
+    var messages = document.getElementById("messages");
+    messages.innerHTML += "<div class='msg'>" + msg + "</div>";
+    messages.scrollTop = messages.scrollHeight;
+});
+
+function sendMessage() {
+    var input = document.getElementById("messageInput");
+    socket.send(input.value);
+    input.value = "";
+}
+</script>
+
+</body>
+</html>

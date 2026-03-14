@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Products</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav>
+    <h2>Campus Exchange 🎓</h2>
+    <div>
+        <a href="/">Home</a>
+        <a href="/upload">Upload</a>
+        <a href="/chat">Chat</a>
+        <a href="/logout"><button style="background:#e50914;color:white;">Logout</button></a>
+    </div>
+</nav>
+
+<h2 style="padding-left:60px;">Manage Products</h2>
+
+<div class="grid">
+{% for item in items %}
+
+<div class="card">
+
+<img src="/static/uploads/{{ item[5].split(',')[0] }}">
+
+<h3>{{ item[1] }}</h3>
+<h4>₹ {{ item[3] }}</h4>
+
+{% if item[6] == 'sold' %}
+
+<p style="color:red;font-weight:bold;">SOLD</p>
+
+<a href="/mark_available/{{ item[0] }}">
+<button style="background:green;">Available</button>
+</a>
+
+{% else %}
+
+<p style="color:lightgreen;font-weight:bold;">AVAILABLE</p>
+
+<a href="/mark_sold/{{ item[0] }}">
+<button style="background:orange;">Mark Sold</button>
+</a>
+
+{% endif %}
+
+<form action="/delete/{{ item[0] }}" method="POST">
+<button class="delete-btn">Delete</button>
+</form>
+
+</div>
+
+{% endfor %}
+
+
+</div>
+
+</body>
+</html>
